@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tony Stark — Portfólio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Portfólio pessoal de Tony Stark — desenvolvedor full-stack." />
+  <style>
+    /* ====== CSS RESET (minimal) ====== */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    img{max-width:100%;display:block}
+
+    /* ====== VARIABLES & THEME ====== */
+    :root{
+      --bg: #0f1724; /* dark navy */
+      --card: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.7);
+      --accent-1: linear-gradient(135deg,#ff6b6b 0%,#ff9f43 100%);
+      --glass: rgba(255,255,255,0.03);
+      --radius: 14px;
+      --glass-border: rgba(255,255,255,0.06);
+      --mono: 'JetBrains Mono', monospace;
+      --ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto;
+    }
+    /* Light theme (checkbox toggle) */
+    input#theme-toggle:checked ~ .site{
+      --bg: #f5f7fb;
+      --card: rgba(12,18,28,0.03);
+      --muted: rgba(8,12,20,0.75);
+      --glass: rgba(255,255,255,0.6);
+      --glass-border: rgba(14,20,30,0.06);
+    }
+
+    body{font-family:var(--ui);background:var(--bg);color:var(--muted);-webkit-font-smoothing:antialiased;line-height:1.45}
+
+    /* ====== LAYOUT ====== */
+    .container{max-width:1100px;margin:40px auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:56px;height:56px;border-radius:12px;background:var(--accent-1);display:grid;place-items:center;color:white;font-weight:800;font-family:var(--mono)}
+    nav ul{display:flex;gap:14px;list-style:none}
+    nav a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:10px;font-weight:600}
+    nav a:hover{background:var(--card);color:white}
+
+    /* THEME TOGGLE (CSS only) */
+    .theme-toggle{display:flex;align-items:center;gap:8px}
+    input#theme-toggle{position:absolute;left:-9999px}
+    .toggle-visual{width:46px;height:26px;border-radius:999px;display:inline-block;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(0,0,0,0.06));padding:4px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    .knob{width:18px;height:18px;border-radius:50%;background:white;display:inline-block;transform:translateX(0);transition:transform .25s}
+    input#theme-toggle:checked + .toggle-visual .knob{transform:translateX(20px)}
+
+    /* ====== HERO ====== */
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center;margin-bottom:28px}
+    .intro{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:28px;border-radius:var(--radius);backdrop-filter: blur(8px);border:1px solid var(--glass-border)}
+    .intro h1{font-size:32px;color:white;margin-bottom:6px}
+    .intro p.lead{color:var(--muted);margin-bottom:18px}
+    .cta{display:flex;gap:12px}
+    .btn{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn-primary{background:var(--accent-1);color:white}
+    .btn-ghost{border:1px solid var(--glass-border;color:var(--muted);background:transparent;color:var(--muted)}
+
+    .avatar-card{padding:18px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid var(--glass-border);display:flex;flex-direction:column;align-items:center;gap:12px}
+    .avatar{width:160px;height:160px;border-radius:20px;background:linear-gradient(180deg,#dfe9f3 0%,#ffffff00 100%);display:grid;place-items:center;font-weight:800;color:#111;font-family:var(--mono)}
+    .role{font-weight:600;color:var(--muted)}
+    .socials{display:flex;gap:10px;margin-top:6px}
+    .socials a{padding:8px;border-radius:10px;background:var(--card);text-decoration:none;color:var(--muted);font-weight:700}
+
+    /* ====== SECTIONS ====== */
+    section{margin-bottom:28px}
+    h2.section-title{font-size:18px;color:white;margin-bottom:12px}
+
+    /* Projects grid */
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .project{border-radius:12px;padding:14px;background:var(--card);border:1px solid var(--glass-border);display:flex;flex-direction:column;gap:10px}
+    .project .thumb{height:140px;border-radius:10px;background:linear-gradient(135deg,#1f2937, #374151);display:grid;place-items:center;color:var(--muted)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{padding:6px 8px;border-radius:8px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,0.04)}
+
+    /* Skills */
+    .skills{display:flex;gap:12px;flex-wrap:wrap}
+    .skill{flex:1 1 240px;background:var(--card);padding:12px;border-radius:12px;border:1px solid var(--glass-border)}
+    .meter{height:10px;border-radius:999px;background:rgba(255,255,255,0.06);overflow:hidden}
+    .meter > i{display:block;height:100%;background:var(--accent-1);width:70%}
+
+    /* Contact */
+    .contact-card{padding:18px;border-radius:12px;background:var(--card);border:1px solid var(--glass-border)}
+    .meta{display:flex;gap:12px;align-items:center}
+    .meta svg{opacity:0.9}
+
+    /* FOOTER */
+    footer{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .projects{grid-template-columns:repeat(2,1fr)}
+      .container{padding:18px}
+    }
+    @media (max-width:640px){
+      .projects{grid-template-columns:1fr}
+      nav ul{display:none}
+    }
+
+    /* small utility */
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <!-- Theme toggle (checkbox hack) -->
+  <input type="checkbox" id="theme-toggle" aria-label="Alternar tema" />
+  <div class="site">
+    <div class="container">
+      <header>
+        <div class="brand">
+          <div class="logo">TS</div>
+          <div>
+            <div style="font-weight:800;color:white">Tony Stark</div>
+            <div style="font-size:12px;color:var(--muted)">Full-stack Developer • Portfólio</div>
+          </div>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="#projetos">Projetos</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </nav>
+
+        <label for="theme-toggle" class="theme-toggle">
+          <span class="toggle-visual"><span class="knob"></span></span>
+        </label>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="intro">
+            <h1>Olá — eu sou <span style="color:white">Tony Stark</span></h1>
+            <p class="lead">Eu crio produtos digitais escaláveis e experiências interativas. Foco em back-end robusto, APIs bem desenhadas e front-ends performáticos.</p>
+            <div class="cta">
+              <a class="btn btn-primary" href="mailto:tony@stark.dev?subject=Oi%20Tony">Contrate-me</a>
+              <a class="btn" href="#projetos" style="background:transparent;border:1px solid var(--glass-border;color:var(--muted);padding:10px 14px;border-radius:10px;text-decoration:none">Ver projetos</a>
+            </div>
+            <div style="margin-top:18px;color:var(--muted);font-size:13px">Local: Lajeado, RS • Disponível para trabalho remoto</div>
+          </div>
+
+          <aside class="avatar-card">
+            <div class="avatar">TS</div>
+            <div style="text-align:center">
+              <div style="font-weight:800;color:white">Tony Stark</div>
+              <div class="role">Full-stack Developer</div>
+              <div class="socials">
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Dribbble</a>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="projetos">
+          <h2 class="section-title">Projetos em destaque</h2>
+          <div class="projects">
+            <article class="project">
+              <div class="thumb">Projeto 1 — Dashboard Analítico</div>
+              <div style="font-weight:700;color:white">Analytics Pro</div>
+              <div class="muted">Dashboard em tempo real com WebSockets e visualizações customizadas.</div>
+              <div class="tags"><span class="tag">Node.js</span><span class="tag">React</span><span class="tag">Postgres</span></div>
+            </article>
+
+            <article class="project">
+              <div class="thumb">Projeto 2 — API Escalável</div>
+              <div style="font-weight:700;color:white">Stark API</div>
+              <div class="muted">Microserviços com CI/CD e observabilidade (logs e métricas).</div>
+              <div class="tags"><span class="tag">Go</span><span class="tag">Docker</span><span class="tag">Kubernetes</span></div>
+            </article>
+
+            <article class="project">
+              <div class="thumb">Projeto 3 — E-commerce</div>
+              <div style="font-weight:700;color:white">ArcMarket</div>
+              <div class="muted">Plataforma de e‑commerce com checkout otimizado e search.</div>
+              <div class="tags"><span class="tag">TypeScript</span><span class="tag">Elastic</span><span class="tag">Redis</span></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="sobre">
+          <h2 class="section-title">Sobre</h2>
+          <div class="contact-card">
+            <p class="muted">Desenvolvedor com experiência em sistemas financeiros e alta disponibilidade. Apaixonado por arquitetura, segurança e melhoria contínua.</p>
+            <ul style="margin-top:12px;list-style:disc;padding-left:18px;color:var(--muted)">
+              <li>+8 anos em desenvolvimento de software</li>
+              <li>Experiência em equipes ágeis e liderança técnica</li>
+              <li>Bacharel em Análise e Desenvolvimento de Sistemas</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="skills">
+          <h2 class="section-title">Skills</h2>
+          <div class="skills">
+            <div class="skill">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><strong>Back-end</strong><span class="muted">90%</span></div>
+              <div class="meter"><i style="width:90%"></i></div>
+            </div>
+
+            <div class="skill">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><strong>Front-end</strong><span class="muted">80%</span></div>
+              <div class="meter"><i style="width:80%"></i></div>
+            </div>
+
+            <div class="skill">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><strong>DevOps</strong><span class="muted">75%</span></div>
+              <div class="meter"><i style="width:75%"></i></div>
+            </div>
+
+            <div class="skill">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><strong>Segurança</strong><span class="muted">70%</span></div>
+              <div class="meter"><i style="width:70%"></i></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contato">
+          <h2 class="section-title">Contato</h2>
+          <div class="contact-card">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+              <div>
+                <div style="font-weight:800;color:white">Quer conversar?</div>
+                <div class="muted">Envie um e-mail ou marque uma conversa rápida.</div>
+              </div>
+              <div style="margin-left:auto">
+                <a class="btn btn-primary" href="mailto:tony@stark.dev?subject=Ol%C3%A1%20Tony">Enviar e-mail</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer>
+        © <span id="ano"></span> Tony Stark • Portfólio criado com HTML & CSS
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // só um pequeno script para preencher o ano no footer (opcional — remova se quiser 100% sem JS)
+    document.getElementById('ano').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
